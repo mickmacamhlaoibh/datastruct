@@ -27,11 +27,11 @@ library
   exposed-modules:
       BinaryTree
       CatenableList
+      ComplexRtqCatList
       Perm
       Queue
       RealTimeQueue
       RedBlackTree
-      RtqCatList
       Set
   other-modules:
       Paths_datastruct

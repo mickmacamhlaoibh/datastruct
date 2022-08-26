@@ -1,5 +1,5 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
-module Set where
+module Set(Set(..)) where
 
   class Set s a where
       empty   :: s a

@@ -1,4 +1,4 @@
-module RtqCatList(clTest, CatList, RTQ.RTQueue, empty, isEmpty, (>:), (<:), (+++), hd, tl, hdU, tlU, toList) where
+module ComplexRtqCatList(clTest, CatList, RTQ.RTQueue, empty, isEmpty, (>:), (<:), (+++), hd, tl, hdU, tlU, toList) where
   
   import CatenableList
   import Queue(Queue)
