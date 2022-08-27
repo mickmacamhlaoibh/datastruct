@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module RedBlackTree(rbTest, fromList, toList, empty, isEmpty, elem, insert, min, max, next, prev, show) where
+module RedBlackTree(rbTest, fromList, toList, empty, isEmpty, elem, insert, min, max, next, prev, prettyShow) where
    
   import Set as S
   import Prelude hiding (elem, min, max)
@@ -9,7 +9,7 @@ module RedBlackTree(rbTest, fromList, toList, empty, isEmpty, elem, insert, min,
   -- Test Code
 
   testSize :: Int
-  testSize = 100000
+  testSize = 2000000
 
   testList :: [Int]
   testList = [1..testSize]
@@ -19,40 +19,45 @@ module RedBlackTree(rbTest, fromList, toList, empty, isEmpty, elem, insert, min,
     putStrLn "Build set"
     let s = fromList testList
     -- print $ s
-    putStrLn "Set built"
-    putStrLn "Find elem"
-    print $ elem 42567 s
-    putStrLn "Find non-elem"
-    print $ elem 99999999942567 s
-    putStrLn "Find lots of elems"
+    putStrLn $ "Set built from " ++  show testSize ++" elements"
+    let e1 = 42567
+    putStrLn $ "Find elem " ++ show e1
+    print $ elem e1 s
+    let e2 = 999999942567 :: Int
+    putStrLn $ "Find non-elem: " ++ show e2
+    print $ elem e2 s
+    putStrLn $ "Find all elems from 1 to " ++ show testSize
     let find = flip elem s
     print $ all find [1..testSize]
+    putStrLn "Write index to file"
+    writeFile "redblack.txt" (show s)
+    putStrLn "Read index from file"
+    index <- readFile "redblack.txt"
+    let s' = read index :: RBTree Int
+    putStrLn $ "Find elem in index read from file: " ++ show e1
+    print $ elem 42567 s'
     putStrLn "Finished"
 
 
   -- Main Code
   
-  data Colour = R | B deriving (Eq, Read)
+  data Colour = R | B deriving (Eq, Read, Show)
 
-  instance Show Colour where
-    show R = "*"
-    show B = ""
+  data RBTree a = Nil | Node Colour a (RBTree a) (RBTree a) deriving (Eq, Read, Show)
 
-  data RBTree a = Nil | Node Colour a (RBTree a) (RBTree a) deriving (Eq, Read)
-
-  instance (Show a) => Show (RBTree a) where
-    show Nil = "Nil"
-    show (Node c x l r) = unlines (ppHelper (Node c x l r)) where
-        
-      pad :: String -> String -> [String] -> [String]
-      pad first rest = zipWith (++) (first : repeat rest)
+  prettyShow  :: (Show a) => RBTree a -> String
+  prettyShow Nil = "E"
+  prettyShow (Node c x l r) = unlines (ppHelper (Node c x l r)) where
+    
+    ppHelper :: Show a => RBTree a -> [String]
+    ppHelper Nil = []
+    ppHelper (Node c' x' l' r') = (show x' ++ show c') : ppSubtree l' r'
+    
+    ppSubtree :: Show a => RBTree a -> RBTree a -> [String]
+    ppSubtree l' r' = pad "<- " "|  " (ppHelper l') ++ pad ">- " "   " (ppHelper r')
       
-      ppSubtree :: Show a => RBTree a -> RBTree a -> [String]
-      ppSubtree l' r' = pad "<- " "|  " (ppHelper l') ++ pad ">- " "   " (ppHelper r')
-      
-      ppHelper :: Show a => RBTree a -> [String]
-      ppHelper Nil = []
-      ppHelper (Node c' x' l' r') = (show x' ++ show c') : ppSubtree l' r'
+    pad :: String -> String -> [String] -> [String]
+    pad first rest = zipWith (++) (first : repeat rest)
   
   toList :: RBTree a -> [a]
   toList Nil = []
