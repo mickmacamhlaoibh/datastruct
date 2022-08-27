@@ -1,4 +1,4 @@
-module RealTimeQueue(rtqTest, RTQueue, fromList, dropQ, empty, isEmpty, add, top, pop, topU, popU) where
+module RealTimeQueue(rtqTest, RTQueue, fromList, dropQ, empty, isEmpty, add, top, pop, topU, popU, cons) where
   
   import Queue
   
@@ -35,6 +35,9 @@ module RealTimeQueue(rtqTest, RTQueue, fromList, dropQ, empty, isEmpty, add, top
   dropQ _ q@(RTQ [] _ _ ) = q
   dropQ n q = dropQ (n-1) (popU q)
 
+  cons :: a -> RTQueue a -> RTQueue a
+  cons x (RTQ f r s)  = RTQ (x:f) r s
+  
   instance Queue RTQueue where
     
     empty = RTQ [] [] []
