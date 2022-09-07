@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module BinaryTree (fromList, toList, empty, isEmpty, elem, insert, min, max, next, prev, show) where
+module BinaryTree (Tree, fromList, toList, empty, isEmpty, elem, insert, min, max, next, prev, show) where
   
   import Set as S
   import Prelude hiding (elem, min, max)
