@@ -1,6 +1,6 @@
 module Perm(permTest, perms, permsC) where
   
-  import ComplexRtqCatList
+  import RtqCatList
   
   -- Test Code
   
